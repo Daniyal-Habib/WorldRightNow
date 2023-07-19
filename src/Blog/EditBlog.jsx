@@ -5,8 +5,7 @@ import { UserContext } from "../Context/Context";
 import { useNavigate, useParams } from "react-router-dom";
 import { edit_Blog, getBlogData_Update, upload_Image } from "../Api/Api";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import classicEditor from "@ckeditor/ckeditor5-build-classic";
-
+import "ckeditor5-custom-build/build/ckeditor";
 const CreateBlog = () => {
   // document title
   document.title = "Update Blog";
@@ -130,11 +129,13 @@ const CreateBlog = () => {
   //
   // update blog
   const submitBlog = async () => {
+
     setProgress(true);
+    setBlog({ ...blog , updatedAt : new Date()})
     if (blog.tags.length === 0) {
       blog.tags = tags;
     }
-    setBlog({ ...blog, tags: tags });
+    setBlog({ ...blog, tags: tags  });
     try {
       await edit_Blog(blog_id, blog, token).then(() => {
         navigate("/dashboard");
@@ -211,6 +212,8 @@ const CreateBlog = () => {
     if (file) {
       uploadImage();
     }
+    console.log(blog)
+
   }, [file, , data, refresh]);
 
   return (
@@ -261,7 +264,7 @@ const CreateBlog = () => {
           <h4 className="createblogbodytext">Body</h4>
           <CKEditor
             data={blog.body}
-            editor={classicEditor}
+            editor={ClassicEditor}
             onChange={handleBodyChange}
             config={options}
           />
@@ -475,7 +478,6 @@ const CreateBlog = () => {
             </div>
           )}
         </div>
-        {/* {blog !== edit && ( */}
         <button className="createblogbutton" type="button" onClick={submitBlog}>
           {progress ? (
             <span className="loader"></span>
@@ -486,7 +488,6 @@ const CreateBlog = () => {
             </>
           )}
         </button>
-        {/* )} */}
       </div>
     </div>
   );

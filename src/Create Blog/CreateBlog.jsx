@@ -7,10 +7,11 @@ import { UserContext } from "../Context/Context";
 import { useNavigate } from "react-router-dom";
 import { submitPost, upload_Image } from "../Api/Api";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import classicEditor from "@ckeditor/ckeditor5-build-classic";
+import "ckeditor5-custom-build/build/ckeditor";
+
 const CreateBlog = () => {
   // document title
-  document.title = "Create Blog";
+  document.title = "Create Blog|HubbleFeed";
   ////
   // hooks and other stuff
   const { user, token } = useContext(UserContext);
@@ -28,6 +29,7 @@ const CreateBlog = () => {
     auhtorId: "",
     tags: [],
   };
+
   const [progress, setProgress] = useState(false);
   const [tags, setTags] = useState([]);
   const [value, setValue] = useState("");
@@ -229,6 +231,7 @@ const CreateBlog = () => {
             placeholder="Title"
             maxLength={100}
             onChange={handleTitleChange}
+            required
           />
           <div className="hintcontainer">
             <label className="labelcreateblog">
@@ -249,7 +252,7 @@ const CreateBlog = () => {
           />
           <div className="hintcontainer">
             <label className="labelcreateblog">
-              Hint: Keep it short and concise
+              Hint: Keep it short and descriptive
             </label>
             <label className="labelcreateblog">
               {`${charDescription <= 300 ? charDescription : 300}/300`}
@@ -263,7 +266,7 @@ const CreateBlog = () => {
           <Suspense fallback={<div>Loading...</div>}>
             <CKEditor
               data={blog.body}
-              editor={classicEditor}
+              editor={ClassicEditor}
               onChange={handleBodyChange}
               config={options}
             />
@@ -337,10 +340,10 @@ const CreateBlog = () => {
                 <a>Programming</a>
               </div>
               <div
-                className={handleActiveDiv("Hollywood")}
-                onClick={() => handleCategoryChange("Hollywood")}
+                className={handleActiveDiv("General")}
+                onClick={() => handleCategoryChange("General")}
               >
-                <a>Hollywood</a>
+                <a>General</a>
               </div>
               <div
                 className={handleActiveDiv("LifeHacks")}
@@ -366,7 +369,7 @@ const CreateBlog = () => {
         <div className="createblogformcontainer tagssectioncontainer">
           <div className="container1">
             <label className="createblogbodytext" htmlFor="addTags">
-              Add Tags
+              Add Tags (press enter to add a tag)
             </label>
             <input
               className="titleinput tagsinput"
@@ -375,6 +378,7 @@ const CreateBlog = () => {
               onChange={handleTagChange}
               onKeyDown={handleEnterPress}
               maxLength={30}
+              required
               id="addTags"
             />
             <div className="hintcontainer">

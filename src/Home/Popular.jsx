@@ -57,13 +57,7 @@ const Popular = ({ category }) => {
       }
     });
   };
-  const handleAddView = (blog) => {
-    if (user.uid !== blog.authorId) {
-      AddView(blog._id);
-    } else if (!user) {
-      AddView(blog._id);
-    }
-  };
+
   useEffect(() => {
     getBlogs();
   }, [category]);
@@ -105,7 +99,7 @@ const Popular = ({ category }) => {
               return (
                 <motion.article
                   className="PopularCard"
-                  onClick={() => handleAddView(blog)}
+                  onClick={() => AddView(blogs_id)}
                   variants={fadeIn("left", "tween", 50, index * 0.1, 0.3)}
                 >
                   <a href={`/${category}/${title}/${blog._id}`} key={index}>
